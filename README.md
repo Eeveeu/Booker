@@ -1,0 +1,238 @@
+# 📚 Booker - Система управления книжным магазином
+
+> Полнофункциональная веб-система для управления книжным магазином "КнигоМакс/Буквофил" с использованием PHP, MySQL и Docker
+
+[![PHP Version](https://img.shields.io/badge/PHP-5.6%20%7C%207.4-blue)](https://www.php.net/)
+[![MySQL](https://img.shields.io/badge/MySQL-5.7-orange)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+## 📋 Описание проекта
+
+Данный проект представляет собой реализацию двух лабораторных работ по курсу "Базы данных":
+
+### Лабораторная работа №1 - Проектирование баз данных с помощью MySQL
+- ✅ Создание полной структуры реляционной БД
+- ✅ Таблицы: Customers, Orders, Books, Order_Items, Book_Reviews
+- ✅ Работа с SQL запросами и связями между таблицами
+
+### Лабораторная работа №2 - Доступ к базе данных MySQL из WEB с помощью PHP
+- ✅ Веб-интерфейс для работы с каталогом книг
+- ✅ Система поиска по ISBN, автору и названию
+- ✅ Сортировка книг по цене и рейтингу продаж
+- ✅ Динамическая генерация HTML страниц с использованием PHP
+
+## 🚀 Быстрый старт
+
+### Предварительные требования
+
+- [Docker](https://www.docker.com/get-started) установлен и запущен
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- Порты 8080 и 3306 свободны
+
+### Установка и запуск
+
+1. **Клонируйте репозиторий:**
+```bash
+git clone https://github.com/Eeveeu/Booker.git
+cd Booker
+```
+
+2. **Запустите Docker контейнеры:**
+```bash
+docker-compose up -d
+```
+
+3. **Откройте браузер:**
+```
+http://localhost:8080/general_page.php
+```
+
+4. **Для остановки:**
+```bash
+docker-compose down
+```
+
+## 🏗️ Структура проекта
+
+```
+Booker/
+├── 📄 general_page.php      # Главная страница магазина
+├── 📄 search.html           # Форма поиска книг
+├── 📄 results.php           # Результаты поиска
+├── 📄 sort_price.php        # Сортировка по цене
+├── 📄 sort_quantity.php     # Рейтинг продаж
+├── 📄 customers_list.php    # Список покупателей
+├── 📄 orders_list.php       # Список заказов
+├── 🗄️ books.sql             # SQL скрипт инициализации БД
+├── 🐳 Dockerfile            # Конфигурация PHP контейнера
+├── 🐳 docker-compose.yml    # Оркестрация контейнеров
+├── ⚙️ my.cnf                # Конфигурация MySQL
+└── 📖 README.md             # Документация
+```
+
+## 💾 Структура базы данных
+
+### Схема БД
+
+```sql
+┌─────────────┐         ┌──────────┐         ┌───────────────┐
+│  customers  │         │  orders  │         │  order_items  │
+├─────────────┤         ├──────────┤         ├───────────────┤
+│ customerid  │────┐    │ orderid  │────┐    │ orderid       │
+│ name        │    └───<│customerid│    └───<│ isbn          │
+│ address     │         │ amount   │         │ quantity      │
+│ city        │         │ date     │         └───────────────┘
+└─────────────┘         └──────────┘                 │
+                                                     │
+                        ┌──────────┐                 │
+                        │  books   │<────────────────┘
+                        ├──────────┤
+                        │ isbn     │
+                        │ author   │
+                        │ title    │
+                        │ price    │
+                        └──────────┘
+                             │
+                             │
+                        ┌────────────────┐
+                        │  book_reviews  │
+                        ├────────────────┤
+                        │ isbn           │
+                        │ review         │
+                        └────────────────┘
+```
+
+### Основные таблицы
+
+| Таблица | Описание | Ключевые поля |
+|---------|----------|---------------|
+| `customers` | Покупатели | customerid, name, address, city |
+| `orders` | Заказы | orderid, customerid, amount, date |
+| `books` | Книги | isbn, author, title, price |
+| `order_items` | Элементы заказа | orderid, isbn, quantity |
+| `book_reviews` | Отзывы | isbn, review |
+
+## 🎯 Функционал
+
+### 📚 Лабораторная работа №1
+
+- **Список покупателей** - просмотр всех клиентов магазина
+- **Список заказов** - история всех заказов с суммами и датами
+- **Реляционная структура** - связанные таблицы с внешними ключами
+
+### 🔍 Лабораторная работа №2
+
+- **Каталог книг** - отображение всех доступных книг
+- **Умный поиск** - поиск по ISBN, автору или названию книги
+- **Сортировка по цене** - от дешевых к дорогим
+- **Рейтинг продаж** - самые популярные книги
+- **Динамический контент** - данные загружаются из MySQL
+
+## 🛠️ Технологии
+
+- **Backend:** PHP 5.6 с расширением MySQLi
+- **Database:** MySQL 5.7 с UTF-8 кодировкой
+- **Frontend:** HTML5
+- **DevOps:** Docker, Docker Compose
+- **Web Server:** Apache 2.4
+
+## 📊 Примеры использования
+
+### Поиск книг по автору
+```
+1. Откройте http://localhost:8080/search.html
+2. Выберите "По автору"
+3. Введите "Chaynikov"
+4. Нажмите "Найти"
+```
+
+### Просмотр рейтинга продаж
+```
+1. Откройте http://localhost:8080/general_page.php
+2. Кликните "Сортировка книг по рейтингу продаж"
+3. Увидите книги от самых продаваемых к непопулярным
+```
+
+## 🔧 Конфигурация
+
+### Настройки MySQL (my.cnf)
+```ini
+[mysqld]
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+[client]
+default-character-set=utf8
+```
+
+### Переменные окружения (docker-compose.yml)
+```yaml
+environment:
+  MYSQL_ROOT_PASSWORD: ''
+  MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+  MYSQL_DATABASE: books
+```
+
+## 📝 API Endpoints
+
+| Страница | Метод | Описание |
+|----------|-------|----------|
+| `/general_page.php` | GET | Главная страница с каталогом |
+| `/search.html` | GET | Форма поиска |
+| `/results.php` | POST | Результаты поиска |
+| `/sort_price.php` | GET | Сортировка по цене |
+| `/sort_quantity.php` | GET | Рейтинг продаж |
+| `/customers_list.php` | GET | Список покупателей |
+| `/orders_list.php` | GET | Список заказов |
+
+## 🐛 Решение проблем
+
+### Порт уже занят
+```bash
+# Измените порты в docker-compose.yml
+ports:
+  - "8081:80"  # Вместо 8080
+```
+
+### База данных не создается
+```bash
+# Пересоздайте контейнеры
+docker-compose down -v
+docker-compose up -d
+```
+
+### Русские буквы отображаются некорректно
+```bash
+# Проверьте кодировку в браузере (должна быть UTF-8)
+# Или используйте транслитерацию в БД (уже реализовано)
+```
+
+## 📚 Учебные материалы
+
+Проект разработан в рамках изучения:
+- Реляционных баз данных MySQL
+- Веб-программирования на PHP
+- Архитектуры клиент-сервер
+- Контейнеризации с Docker
+
+## 👨‍💻 Автор
+
+**Eeveeu**
+- GitHub: [@Eeveeu](https://github.com/Eeveeu)
+
+## 📄 Лицензия
+
+Этот проект создан в образовательных целях.
+
+## 🙏 Благодарности
+
+- Преподавателям курса "Базы данных"
+- Сообществу Docker
+- Разработчикам PHP и MySQL
+
+---
+
+<p align="center">
+  Made with ❤️ for learning databases
+</p>
